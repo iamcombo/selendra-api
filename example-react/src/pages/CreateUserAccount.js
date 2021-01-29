@@ -17,9 +17,7 @@ function CreateUserAccount() {
     })
     setMnemonic(res.mnemonic);
     setPair(res.pair);
-    // setTimeout(() => {
-      setModalVisible(true);
-    // }, 1000);
+    setModalVisible(true);
   }
 
   return (
@@ -45,14 +43,14 @@ function CreateUserAccount() {
           </Form>
         </Col>
       </Row>
-      {mnemonic && pair && (
+      {/* {mnemonic && pair && (
         <Modal title="" footer={null} visible={ModalVisible} onCancel={() => setModalVisible(false)}>
           <p>Mnemonic: <span className='create__res'>{mnemonic}</span></p>
           <p>Name: <span className='create__res'>{pair.meta.name}</span></p>
           <p>Address: <span className='create__res'>{pair.address}</span></p>
           <p>Crypto Type: <span className='create__res'>{pair.type}</span></p>
         </Modal>
-      )}
+      )} */}
     </div>
   )
 }
