@@ -9,8 +9,7 @@ function Transaction() {
       rawSeed: val.rawSeed, 
       receiverAddress: val.receiver, 
       amount: val.amount
-    })
-    console.log(res.transfer);
+    }).then(result => console.log('rs:', result))
   }
 
   return (

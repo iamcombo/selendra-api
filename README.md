@@ -30,5 +30,5 @@ To get a local copy up and running follow these simple example steps.
 
   const res = CreateAccount({ username, type });
   const res = ImportAccount({ mnemonic, seed, type });
-  const res = Transfer({ senderAddress, receiverAddress, senderPassword, amount });
+  const res = Transfer({ rawSeed, receiverAddress, amount });
   ```

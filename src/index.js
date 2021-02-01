@@ -42,17 +42,19 @@ const Transfer = async({receiverAddress, rawSeed, amount}) => {
     const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
     
     const senderPair = keyring.createFromUri(rawSeed);
+
+    const { data: balance } = await api.query.system.account(senderPair.address);
+    console.log('re:', balance.free.toHuman());
   
     let chainDecimals = (10 ** api.registry.chainDecimals);
-    let balance = new BigNumber(amount * chainDecimals);
+    let transferBalance = new BigNumber(amount * chainDecimals);
   
     const transfer = await api.tx.balances
-    .transfer(receiverAddress, balance.toFixed())
+    .transfer(receiverAddress, transferBalance.toFixed())
     .signAndSend(senderPair, (result) => {
       console.log(`Current status is ${result.status}`);
     })
-  
-    return { transfer };  
+    return transfer;  
   }catch(error) {
     console.log(error);
   }
