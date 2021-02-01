@@ -6,22 +6,18 @@ function Transaction() {
 
   const handleTransfer = async(val) => {
     const res = await Transfer({
-      senderAddress: val.sender,
+      rawSeed: val.rawSeed, 
       receiverAddress: val.receiver, 
-      senderPassword: val.password, 
       amount: val.amount
     })
-    console.log(res);
+    console.log(res.transfer);
   }
 
   return (
     <div>
       <Form onFinish={handleTransfer}>
-        <Form.Item name='sender'>
-          <Input placeholder='Sender Address'/>
-        </Form.Item>
-        <Form.Item name='password'>
-          <Input placeholder='Password'/>
+        <Form.Item name='rawSeed'>
+          <Input placeholder='Raw Seed'/>
         </Form.Item>
         <Form.Item name='receiver'>
           <Input placeholder='Receiver Address'/>

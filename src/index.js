@@ -1,7 +1,6 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
-import keyring from '@polkadot/ui-keyring';
-import { mnemonicGenerate, cryptoWaitReady } from '@polkadot/util-crypto';
+import { mnemonicGenerate } from '@polkadot/util-crypto';
 import BigNumber from "bignumber.js";
 
 const CreateAccount = async ({username, type}) => {
@@ -36,20 +35,16 @@ const ImportAccount = async ({mnemonic, seed, type}) => {
   }
 }
 
-const Transfer = async({senderAddress, receiverAddress, senderPassword, amount}) => {
+const Transfer = async({receiverAddress, rawSeed, amount}) => {
   try {
     const wsProvider = new WsProvider('wss://rpc-testnet.selendra.org');
     const api = await ApiPromise.create({ provider: wsProvider });
-    // const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
-    await cryptoWaitReady()
-    .then(() => {
-      keyring.loadAll({ type: 'sr25519', ss58Format: 2 });
-    })
-    const senderPair = keyring.getPair(senderAddress);
-    senderPair.decodePkcs8(senderPassword);
+    const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
+    
+    const senderPair = keyring.createFromUri(rawSeed);
   
     let chainDecimals = (10 ** api.registry.chainDecimals);
-    let balance = new BigNumber(chainDecimals * amount);
+    let balance = new BigNumber(amount * chainDecimals);
   
     const transfer = await api.tx.balances
     .transfer(receiverAddress, balance.toFixed())
@@ -57,7 +52,7 @@ const Transfer = async({senderAddress, receiverAddress, senderPassword, amount})
       console.log(`Current status is ${result.status}`);
     })
   
-    return { transfer };
+    return { transfer };  
   }catch(error) {
     console.log(error);
   }
