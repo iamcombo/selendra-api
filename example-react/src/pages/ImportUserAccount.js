@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { Button, Form, Input, Switch } from 'antd'
+import { Button, Form, Input, Switch, Select } from 'antd'
 import { ImportAccount } from 'selendra-api'
 
 function ImportUserAccount() {
+  const { Option } = Select;
+
   const [switchMnemo, setSwitchMnemo] = useState(true);
 
   const onChange = () => {
@@ -11,10 +13,10 @@ function ImportUserAccount() {
 
   const handleImport = async(val) => {
     const res = await ImportAccount({
-      mnemonic: val.mnemonic
+      mnemonic: val.mnemonic,
+      type: val.type
     })
-    console.log(res);
-    console.log(res.pair.meta.name);
+    console.log(res.pair.address);
   }
 
   return (
@@ -27,6 +29,14 @@ function ImportUserAccount() {
           <Form.Item name="mnemonic">
             <Input placeholder='Mnemonic Seed'/>
           </Form.Item>
+          <Form.Item name='type'>
+            <Select
+              placeholder='Select Crypto Type'
+            >
+              <Option value='ed25519'>ed25519</Option>
+              <Option value='sr25519'>sr25519</Option>
+            </Select>
+          </Form.Item>
           <Form.Item>
             <Button htmlType='submit'>Import Account</Button>
           </Form.Item>
@@ -36,6 +46,14 @@ function ImportUserAccount() {
         <Form>
           <Form.Item>
             <Input placeholder='Seed'/>
+          </Form.Item>
+          <Form.Item name='type'>
+            <Select
+              placeholder='Select Crypto Type'
+            >
+              <Option value='ed25519'>ed25519</Option>
+              <Option value='sr25519'>sr25519</Option>
+            </Select>
           </Form.Item>
           <Form.Item>
             <Button>Import Account</Button>

@@ -4,11 +4,11 @@ import keyring from '@polkadot/ui-keyring';
 import { mnemonicGenerate, cryptoWaitReady } from '@polkadot/util-crypto';
 import BigNumber from "bignumber.js";
 
-const CreateAccount = async ({username, type, ...props}) => {
+const CreateAccount = async ({username, type}) => {
   const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
   const mnemonic = mnemonicGenerate(12);
   try {
-    const pair = keyring.addFromMnemonic(mnemonic, { name: username }, type);
+    const pair = keyring.addFromUri(mnemonic, { name: username }, type);
     
     console.log(keyring.pairs.length, 'pairs available');
     console.log(pair.meta.name, 'has address', pair.address);
@@ -21,10 +21,10 @@ const CreateAccount = async ({username, type, ...props}) => {
   }
 }
 
-const ImportAccount = async ({mnemonic, seed}) => {
+const ImportAccount = async ({mnemonic, seed, type}) => {
   const keyring = new Keyring({ ss58Format: 2 });
   try {
-    const pair = keyring.addFromMnemonic(mnemonic);
+    const pair = keyring.addFromUri(mnemonic, {} ,type);
 
     console.log(keyring.pairs.length, 'pairs available');
     console.log(pair.meta.name, 'has address', pair.address);
