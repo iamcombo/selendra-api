@@ -8,12 +8,10 @@ const CreateAccount = async ({username, type}) => {
   const mnemonic = mnemonicGenerate(12);
   try {
     const pair = keyring.addFromUri(mnemonic, { name: username }, type);
-    
-    console.log(keyring.pairs.length, 'pairs available');
-    console.log(pair.meta.name, 'has address', pair.address);
-    console.log('has Type', pair.type);
-    console.log('Mnemomic', mnemonic);
-    
+    // console.log(keyring.pairs.length, 'pairs available');
+    // console.log(pair.meta.name, 'has address', pair.address);
+    // console.log('has Type', pair.type);
+    // console.log('Mnemomic', mnemonic);
     return { mnemonic, pair };
   } catch (error) {
     console.log(error);
@@ -24,11 +22,9 @@ const ImportAccount = async ({mnemonic, seed, type}) => {
   const keyring = new Keyring({ ss58Format: 2 });
   try {
     const pair = keyring.addFromUri(mnemonic, {} ,type);
-
-    console.log(keyring.pairs.length, 'pairs available');
-    console.log(pair.meta.name, 'has address', pair.address);
-    console.log('has Type', pair.type );
-
+    // console.log(keyring.pairs.length, 'pairs available');
+    // console.log(pair.meta.name, 'has address', pair.address);
+    // console.log('has Type', pair.type );
     return { pair };
   } catch(error) {
     console.log(error);
@@ -41,10 +37,14 @@ const Transfer = async({receiverAddress, rawSeed, amount}) => {
     const api = await ApiPromise.create({ provider: wsProvider });
     const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
     
+    if(!rawSeed) throw new Error ('raw seed could not be null');
+    if(!receiverAddress) throw new Error ('receiver address could not be null');
+    if(!amount || amount <= 0) throw new Error ('amount should be a unique value');
+
     const senderPair = keyring.createFromUri(rawSeed);
 
     const { data: balance } = await api.query.system.account(senderPair.address);
-    console.log('re:', balance.free.toHuman());
+    console.log('balance:', balance.free);
   
     let chainDecimals = (10 ** api.registry.chainDecimals);
     let transferBalance = new BigNumber(amount * chainDecimals);
@@ -55,8 +55,8 @@ const Transfer = async({receiverAddress, rawSeed, amount}) => {
       console.log(`Current status is ${result.status}`);
     })
     return transfer;  
-  }catch(error) {
-    console.log(error);
+  } catch(err) {
+    console.log(err);
   }
 }
 

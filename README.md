@@ -25,10 +25,21 @@ To get a local copy up and running follow these simple example steps.
   ```
 
 ### Usage
-  ```
+* import
+  ```sh
   import { CreateAccount, ImportAccount, Transfer } from 'selendra-api';
-
-  const res = CreateAccount({ username, type });
-  const res = ImportAccount({ mnemonic, seed, type });
-  const res = Transfer({ rawSeed, receiverAddress, amount });
+  ```
+* Create Account
+  ```sh
+  const res = await CreateAccount({ username, type });
+  console.log(res.mnemonic, res.pair);
+  ```
+* Import Account
+  ```sh
+  const res = await ImportAccount({ mnemonic, seed, type });
+  console.log(res.pair);
+  ```
+* Transfer
+  ```sh
+  const res = await Transfer({ rawSeed, receiverAddress, amount });
   ```
