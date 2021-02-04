@@ -13,10 +13,18 @@ function ImportUserAccount() {
 
   const handleImport = async(val) => {
     const res = await ImportAccount({
-      mnemonic: val.mnemonic,
+      seed: val.mnemonic,
       type: val.type
     })
-    console.log(res.pair.address);
+    console.log('address:', res.pair.address);
+  }
+
+  const handleImportMnemonic = async(val) => {
+    const res = await ImportAccount({
+      seed: val.seed,
+      type: val.type
+    })
+    console.log('address:', res.pair.address);
   }
 
   return (
@@ -43,8 +51,8 @@ function ImportUserAccount() {
         </Form>
       )}
       { !switchMnemo && (
-        <Form>
-          <Form.Item>
+        <Form onFinish={handleImportMnemonic}>
+          <Form.Item name='seed'>
             <Input placeholder='Seed'/>
           </Form.Item>
           <Form.Item name='type'>

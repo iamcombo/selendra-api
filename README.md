@@ -1,6 +1,5 @@
 <p align="center">
   <h3 align="center">README</h3>
-
   <p align="center">
     <br />
     <a href="https://github.com/iamcombo/selendra-api"><strong>Explore the docs »</strong></a>
@@ -41,6 +40,6 @@ To get a local copy up and running follow these simple example steps.
   ```
 * Transfer
   ```
-  const res = await Transfer({ rawSeed, receiverAddress, amount });
+  const res = await Transfer({ seed, receiverAddress, amount });
   console.log(res.hash);
   ```

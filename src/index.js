@@ -1,6 +1,6 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
-import { mnemonicGenerate } from '@polkadot/util-crypto';
+import { mnemonicGenerate, mnemonicValidate } from '@polkadot/util-crypto';
 import BigNumber from "bignumber.js";
 
 const CreateAccount = async ({username, type}) => {
@@ -12,11 +12,12 @@ const CreateAccount = async ({username, type}) => {
   return { mnemonic, pair };
 }
 
-const ImportAccount = async ({mnemonic, seed, type}) => {
+const ImportAccount = async ({seed, type}) => {
   const keyring = new Keyring({ ss58Format: 2 });
-  if(!seed || !mnemonic) throw new Error ('seed could not be null');
+  if(mnemonicValidate(seed) === false) throw new Error ('Seed is not valid!');
+  if(!seed) throw new Error ('seed could not be null');
   if(!type) throw new Error ('type could not be null');
-  const pair = keyring.addFromUri(mnemonic, {} ,type);
+  const pair = keyring.addFromUri(seed, {} ,type);
   return { pair };
 }
 
@@ -25,7 +26,8 @@ const Transfer = async({receiverAddress, seed, amount}) => {
   const api = await ApiPromise.create({ provider: wsProvider });
   const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
   
-  if(!rawSeed) throw new Error ('raw seed could not be null');
+  if(!seed) throw new Error ('raw seed could not be null');
+  if(mnemonicValidate(seed) === false) throw new Error ('Seed is not valid!');
   if(!receiverAddress) throw new Error ('receiver address could not be null');
   if(!amount || amount <= 0) throw new Error ('amount should be a unique value');
 
