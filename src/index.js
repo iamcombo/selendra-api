@@ -6,20 +6,17 @@ import BigNumber from "bignumber.js";
 const CreateAccount = async ({username, type}) => {
   const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
   const mnemonic = mnemonicGenerate(12);
+  if(!username) throw new Error ('username could not be null');
+  if(!type) throw new Error ('type could not be null');
   const pair = keyring.addFromUri(mnemonic, { name: username }, type);
-  // console.log(keyring.pairs.length, 'pairs available');
-  // console.log(pair.meta.name, 'has address', pair.address);
-  // console.log('has Type', pair.type);
-  // console.log('Mnemomic', mnemonic);
   return { mnemonic, pair };
 }
 
 const ImportAccount = async ({mnemonic, seed, type}) => {
   const keyring = new Keyring({ ss58Format: 2 });
+  if(!seed || !mnemonic) throw new Error ('seed could not be null');
+  if(!type) throw new Error ('type could not be null');
   const pair = keyring.addFromUri(mnemonic, {} ,type);
-  // console.log(keyring.pairs.length, 'pairs available');
-  // console.log(pair.meta.name, 'has address', pair.address);
-  // console.log('has Type', pair.type );
   return { pair };
 }
 
