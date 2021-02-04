@@ -30,16 +30,17 @@ To get a local copy up and running follow these simple example steps.
   import { CreateAccount, ImportAccount, Transfer } from 'selendra-api';
   ```
 * Create Account
-  ```sh
+  ```
   const res = await CreateAccount({ username, type });
   console.log(res.mnemonic, res.pair);
   ```
 * Import Account
-  ```sh
+  ```
   const res = await ImportAccount({ mnemonic, seed, type });
   console.log(res.pair);
   ```
 * Transfer
-  ```sh
+  ```
   const res = await Transfer({ rawSeed, receiverAddress, amount });
+  console.log(res.hash);
   ```
