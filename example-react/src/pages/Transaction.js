@@ -3,20 +3,20 @@ import { Form, Input, Button } from 'antd'
 import { Transfer } from 'selendra-api'
 
 function Transaction() {
-
   const handleTransfer = async(val) => {
-    const res = await Transfer({
-      rawSeed: val.rawSeed, 
+    await Transfer({
+      seed: val.rawSeed, 
       receiverAddress: val.receiver, 
       amount: val.amount
-    }).then(result => console.log('rs:', result))
+    })
+    .then(res => console.log('hash:', res.hash))
   }
 
   return (
     <div>
       <Form onFinish={handleTransfer}>
         <Form.Item name='rawSeed'>
-          <Input placeholder='Raw Seed'/>
+          <Input placeholder='Seed'/>
         </Form.Item>
         <Form.Item name='receiver'>
           <Input placeholder='Receiver Address'/>
